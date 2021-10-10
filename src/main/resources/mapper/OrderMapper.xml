@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.talelin.latticy.mapper.OrderMapper">
+
+    <update id="changeOrderStatus">
+        update `order` o set o.status = #{status} where o.id = #{id}
+    </update>
+
+    <select id="searchOrders" resultType="io.github.talelin.latticy.model.OrderDO">
+        select o.* from `order` o
+        where o.delete_time is null
+        <if test="start != null and end != null">
+            AND o.create_time BETWEEN #{start} AND #{end}
+        </if>
+        <if test="keyword != null">
+            AND o.order_no LIKE #{keyword}
+        </if>
+        ORDER BY o.create_time DESC
+    </select>
+
+<!--    <select id="getById" resultType="io.github.talelin.latticy.model.OrderDO">-->
+<!--        select o.* from `order` o-->
+<!--        where o.delete_time is null-->
+<!--        AND o.id = #{id}-->
+<!--    </select>-->
+</mapper>
